@@ -1,0 +1,5 @@
+---
+ns: "ric-sandbox"
+dc: "app1"
+threshold: "80"
+scale: "20"

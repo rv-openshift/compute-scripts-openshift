@@ -1,0 +1,25 @@
+---
+- fail: msg="The variable 'snow_username' is not defined!"
+  when: snow_username is undefined
+
+- fail: msg="The variable 'snow_password' is not defined!"
+  when: snow_password is undefined
+
+- fail: msg="The variable 'snow_instance' is not defined!"
+  when: snow_instance is undefined
+
+- name: "Create Snow CI record"
+  delegate_to: localhost
+  run_once: true
+  snow_record:
+    username: "{{ snow_username }}"
+    password: "{{ snow_password }}"
+    instance: "{{ snow_instance }}"
+    table: "{{ snow_ci_table }}"
+    lookup_field: name
+    state: present
+    data:
+      name: "{{ ci_name }}"
+      container_created_at: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+      container_id: "{{ display_name }}"
+      assignment_group: "{{ snow_ci_assignment_group }}"

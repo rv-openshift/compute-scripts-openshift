@@ -1,0 +1,4 @@
+---
+project_name: 'efms-lt'
+limit_cpu: "6000m"
+limit_memory: "100Gi"

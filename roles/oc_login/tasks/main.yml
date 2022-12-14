@@ -1,0 +1,3 @@
+- name: Log into openshift
+  shell: |
+    oc login -u {{ lookup('env','HTPASSWD_USERNAME') }} -p {{ lookup('env', 'HTPASSWD_PASSWORD') }}

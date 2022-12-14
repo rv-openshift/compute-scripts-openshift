@@ -1,0 +1,4 @@
+# Namespace creation without NFS Shares
+project_name: 'emap-uat'
+project_puid: "None"
+project_pgid: "10000"

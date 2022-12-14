@@ -1,0 +1,11 @@
+- name: Login with API token
+  shell: "{{ oc_dir}}/oc login --token='{{ k8s_auth_results.k8s_auth.api_key }}' --insecure-skip-tls-verify=true {{ K8S_ADDR }}"
+
+- name: Template out Health Checks yaml resource file
+  template:
+    src: "{{ node_type }}-node-checks.yaml.j2"
+    dest: "/tmp/{{ node_type }}-node-checks.yaml"
+    mode: '0755'
+
+- name: Deploy Node Health Checks
+  shell: "{{ oc_dir}}/oc apply -f /tmp/{{ node_type }}-node-checks.yaml"

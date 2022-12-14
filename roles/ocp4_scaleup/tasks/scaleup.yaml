@@ -1,0 +1,45 @@
+- name: Create tmp dir
+  file:
+    path: /tmp/scaleup
+    state: directory
+    mode: 0775
+
+- name: get dc yaml and limit
+  shell: |
+         oc get dc/{{dc}} -o yaml > /tmp/scaleup/dc.yml
+         cat /tmp/scaleup/dc.yml|grep -A2 ' limit' > /tmp/scaleup/limit.tmp
+
+- name: get replica
+  shell: |
+         cat /tmp/scaleup/dc.yml | grep 'replicas:'|grep -v {}|awk 'NR==1 {print $2}'
+  register: replica
+         
+- name: get current cpu[s] and mem[s]
+  shell: |
+         oc adm top pods | grep $(oc get dc|awk 'NR==2 {print $1}')|awk '{print $2}' > /tmp/scaleup/cpu.tmp
+         oc adm top pods | grep $(oc get dc|awk 'NR==2 {print $1}')|awk '{print $3}' > /tmp/scaleup/mem.tmp
+
+- name: get limitcpu
+  shell: |
+         cat /tmp/scaleup/dc.yml|grep -A2 ' limit'|grep cpu|awk '{print $2}'
+  register: limitcpu
+
+- name: get limitmem
+  shell: |
+         cat /tmp/scaleup/dc.yml|grep -A2 ' limit'|grep memory|awk '{print $2}'
+  register: limitmem
+
+- name: calculate scale up
+  scaleup:
+    threshold: "{{threshold}}"
+    scale:     "{{scale}}"
+    replica:   "{{replica.stdout}}"
+    limitcpu:  "{{limitcpu.stdout}}"
+    limitmem:  "{{limitmem.stdout}}"
+  register: trigger
+
+- name: scale up
+  shell: |
+         oc apply -f /tmp/scaleup/dc.yml
+         oc rollout latest dc/{{dc}}
+  when: trigger.meta.triggerscale == "true"

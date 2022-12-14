@@ -1,0 +1,7 @@
+---
+project_name: 'tv-blob-qa3'
+nfs_path: "/TvDataQA3blobs"
+nfs_svr: "teranastvbmr1.corp.domain.ca"
+pv_size: "400Gi"
+pv_name: "tv-blobs-qa3-mss-nfs-pv"
+pvc_name: "tv-blobs-qa3-mss"

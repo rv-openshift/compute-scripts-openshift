@@ -1,0 +1,7 @@
+---
+project_name: 'rts-prod'
+nfs_path: "/vol/TvCstore/cstore"
+nfs_svr: "msssanctrlpr7vd2.corp.domain.ca"
+pv_size: 505Gi
+pv_name:  "rts-prod-nfs-cstore-mss-pv"
+pvc_name: "rts-prod-nfs-cstore-mss-pvc"

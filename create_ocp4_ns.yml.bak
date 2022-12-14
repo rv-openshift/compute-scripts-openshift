@@ -1,0 +1,8 @@
+---
+- name: Create New Namespace for Applications
+  hosts: bastion
+  gather_facts: false
+
+  roles:
+  - k8s_auth
+  - ocp4_namespace

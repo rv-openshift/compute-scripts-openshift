@@ -1,0 +1,12 @@
+---
+
+- include: k8s_login.yaml
+
+- name: select edit quota
+  include_tasks: edit_quota.yaml
+  when: edit_quota | default(False) == True
+
+# in the future to add like 'edit role' so that no need to create additional role or folder 
+# - name: select edit role
+#   include_tasks: edit_role.yml
+#   when: edit_role | default(False) == True

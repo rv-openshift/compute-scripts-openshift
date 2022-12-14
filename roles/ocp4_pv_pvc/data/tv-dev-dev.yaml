@@ -1,0 +1,8 @@
+
+---
+project_name: 'tv-dev'
+nfs_path: "/OCP_TRV_DEVUAT/ngtv/dev"
+nfs_svr: "msssanctrlpr7vd2.corp.domain.ca"
+pv_size: 20Gi
+pv_name:  "tv-ngtv-nt-nfs-pv"
+pvc_name: "tv-ngtv-nt-nfs-pvc"

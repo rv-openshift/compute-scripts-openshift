@@ -1,0 +1,4 @@
+---
+project_name: 'onland-csp-lt'
+limit_cpu: "2000m"
+limit_memory: "16Gi"

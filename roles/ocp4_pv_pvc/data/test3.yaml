@@ -1,0 +1,7 @@
+---
+project_name: 'testme'
+nfs_path: "/ocp_sandbox"
+nfs_svr: "172.28.132.186"
+pv_size: "2Gi"
+pv_name: "testme-pv"
+pvc_name: "testme-pvc"

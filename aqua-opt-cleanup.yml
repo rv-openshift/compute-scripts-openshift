@@ -1,0 +1,16 @@
+- hosts: apps
+  run_once: false
+  gather_facts: false
+  become: yes
+  tasks:
+  - name: Identify Aqua image temp files
+    find:
+      paths: /opt/aquasec/tmp
+      patterns: "image.scan*"
+      use_regex: true
+    register: files_to_delete
+  - name: Remove identified Aqua image temp file
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: "{{ files_to_delete.files }}"

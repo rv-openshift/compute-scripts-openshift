@@ -1,0 +1,11 @@
+---
+- name: Deploy Appdynamics Instrucmentation for Applications
+  hosts: bastion
+  gather_facts: false
+
+  vars_files:
+  - roles/ocp4_appd_inst/data/{{ appd_src_file }}.yaml
+
+  roles:
+  - k8s_auth
+  - ocp4_appd_inst

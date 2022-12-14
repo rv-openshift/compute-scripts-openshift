@@ -1,0 +1,32 @@
+---
+
+- set_fact: limitscpu=''
+  when: limitscpu is not defined
+- set_fact: limitsmemory=''
+  when: limitsmemory is not defined
+- set_fact: requestscpu=''
+  when: requestscpu is not defined
+- set_fact: requestsmemory=''
+  when: requestsmemory is not defined
+- set_fact: pods=''
+  when: pods is not defined
+
+- name: Fail when no variable updated
+  fail:
+    msg: At least one of the variable need to be updated!
+  when: limitscpu=='' and limitsmemory=='' and requestscpu=='' and requestsmemory=='' and pods==''
+
+- name: delete current quota
+  shell: 'oc delete quota {{resourcequota}} -n {{namespace}}'    
+  register: x
+
+- set_fact: timestamp="_{{lookup('pipe','date +%Y%m%d-%H%M')}}"  
+
+- name: create template
+  template:
+    src: newquota.j2
+    dest: '/tmp/newquota{{timestamp}}.yml'
+
+- name: recreate the quota
+  shell: 'oc create -f /tmp/newquota{{timestamp}}.yml'
+  when: x.changed

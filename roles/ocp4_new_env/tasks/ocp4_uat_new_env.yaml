@@ -1,0 +1,16 @@
+- name: Check if Namespace {{ project_name }} exists
+  command: oc get project {{ project_name }} -o json
+  check_mode: false
+  changed_when: false
+  failed_when: false
+  register: get_project
+
+- name: Create Namespace
+  command: oc new-project "{{ project_name }}" --display-name "{{ project_name }}"
+
+- name: Add Admin users to Application Namespace
+  command: oc adm policy add-role-to-user admin {{ item }} -n {{ project_name }}
+  with_items: "{{ ads_users }}"
+
+- name: Create Namespace Quota
+  command: oc create resourcequota {{ project_name }}-quotas --hard=limits.cpu={{ limit_cpu }},limits.memory={{ limit_memory }} -n {{ project_name }}

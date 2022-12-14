@@ -1,0 +1,11 @@
+- name: Add Admin Access users to Application Namespace
+  command: oc adm policy add-role-to-user admin {{ item }} -n {{ project_name }}
+  with_items: "{{ ads_users }}"
+
+- name: Add View Access users to Application Namespace
+  command: oc adm policy add-role-to-user view {{ item }} -n {{ project_name }}
+  with_items: "{{ dev_users }}"
+
+- name: Remove users from  Application Namespace
+  command: oc adm policy remove-role-from-user {{ access_level }} {{ item }} -n {{ project_name }}
+  with_items: "{{ rem_users }}"

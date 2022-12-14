@@ -1,0 +1,19 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineHealthCheck
+metadata:
+  name: {{ cluster_env }}-{{ machine_role }}-node-health-check 
+  namespace: openshift-machine-api
+spec:
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-machine-role: {{ machine_role }}
+      machine.openshift.io/cluster-api-machine-type: {{ machine_role }}
+  unhealthyConditions:
+  - type:    "Ready"
+    timeout: "300s" 
+    status: "False"
+  - type:    "Ready"
+    timeout: "300s" 
+    status: "Unknown"
+  maxUnhealthy: "1" 
+  nodeStartupTimeout: "10m"

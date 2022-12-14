@@ -1,0 +1,11 @@
+---
+
+# if you do not put on either one of the limitscpu, limitsmemory, pods, requestscpu and requestsmemory, none will be updated  
+# you may edit one resource, you don't need to put all the existing resources, script will skip but still retain it
+namespace:     'ric-sandbox'   # required
+resourcequota: 'example'       # required
+limitscpu:     '1'             # optional
+limitsmemory:  '1Gi'           # optional  
+pods:                          # optional
+requestscpu:                   # optional
+requestsmemory:                # optional

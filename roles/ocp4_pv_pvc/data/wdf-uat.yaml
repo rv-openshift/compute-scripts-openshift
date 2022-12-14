@@ -1,0 +1,7 @@
+---
+project_name: 'wdf-uat'
+nfs_path: "/vol/OCP_WDF_UAT/uat"
+nfs_svr: "msssanctrlpr7vd2.corp.domain.ca"
+pv_size: "1Gi"
+pv_name: "wdf-uat-mss-pv"
+pvc_name: "wdf-uat-mss-pvc"

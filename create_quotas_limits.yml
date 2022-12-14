@@ -1,0 +1,18 @@
+# Create resource quotas and limits for a specified OpenShift project. This playbook assumes that the inventory being run on corresponds 
+# to a single node with oc cli access to the cluster.
+---
+- hosts: masters
+  vars:
+    - project_name: project-name
+    - max_pod_cpu_limit: '0.5'
+    - max_pod_memory_limit: '2Gi'
+    - max_container_cpu_limit: '0.5'
+    - max_container_memory_limit: '2Gi'
+    - cpu_request_quota: '0.5'
+    - memory_request_quota: '2Gi'
+    - cpu_limit_quota: '0.5'
+    - memory_limit_quota: '2Gi'
+    - tmp_quotas_file: "/tmp/{{ project_name }}_quotas_limits.yml"
+  roles:
+    - { role: oc_login, when: "inventory_hostname in groups['masters'][0]" }
+    - { role: create_quotas_limits, when: "inventory_hostname in groups['masters'][0]" }

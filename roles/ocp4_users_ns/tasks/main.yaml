@@ -1,0 +1,2 @@
+- include: k8s_login.yaml
+- include: add_users_ns.yaml

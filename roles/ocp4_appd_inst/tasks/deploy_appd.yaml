@@ -1,0 +1,63 @@
+- name: Create Appd ClusterAgent Configuration
+  shell: oc get clusteragent k8s-cluster-agent -n appdynamics -o yaml > {{ conf_file }}
+
+- name: Create Appd CluserAgent Configuration backout version
+  shell: oc get clusteragent k8s-cluster-agent -n appdynamics -o yaml > {{ conf_path }}/appd_config_backup.yaml
+
+- name: Add Namespace to Appdynamics, if doesn't exist
+  replace:
+    path: "{{ conf_file }}"
+    regexp: '(nsToInstrumentRegex: default(?!.*\b{{ appd_ns }}\b).*)$'
+    replace: '\1|{{ appd_ns }}'
+
+- name: Gather information whether Namespace already instrumented
+  shell: "grep {{ appd_ns }} {{ conf_file }} | grep namespaceRegex"
+  register: appd_inst_out
+  ignore_errors: true
+
+- name: Add Instrumentation block for New Namespace
+  blockinfile:
+    path: "{{ conf_file }}"
+    insertafter: 'instrumentationRules:'
+    state: "{{ 'absent' if appd_inst_out.rc == 0 else 'present' }}"
+    marker: ""
+    block: |2
+        - appNameLabel: appname
+          env: JAVA_TOOL_OPTIONS
+          imageInfo:
+            agentMountPath: /opt/appdynamics
+            image: docker.io/appdynamics/java-agent:latest
+            imagePullPolicy: IfNotPresent
+          instrumentContainer: first
+          language: java
+          matchString: {{ ns_str }}
+          namespaceRegex: {{ appd_ns }}
+          netvizInfo:
+            bciEnabled: true
+            port: 3892
+
+- name: Remove blank lines blockinfile input
+  lineinfile:
+   path: "{{ conf_file }}"
+   state: absent
+   regexp: '^$'
+  when: appd_inst_out.rc != 0
+
+- name: Identify if Another Application instrumented in Existing Namespace
+  shell: "grep {{ ext_str }} {{ conf_file }} | cut -f1 -d '|' | tail -1"
+  register: ns_stg
+  ignore_errors: true
+  when: appd_inst_out.rc == 0
+
+- name: Add New Application to Existing Namespace String
+  replace:
+    path: "{{ conf_file }}"
+    regexp: '({{ ns_stg.stdout }}(?!.*\b{{ ns_str }}\b).*)$'
+    replace: '\1|{{ ns_str }}'
+  when: appd_inst_out.rc == 0
+
+- name: Apply Appd Configuration
+  command: oc replace -f {{ conf_file }} -n appdynamics
+
+- name: Restart Appd Pod
+  command: oc delete pod --selector=clusterAgent_cr -n appdynamics

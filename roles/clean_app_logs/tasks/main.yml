@@ -1,0 +1,5 @@
+- name: Truncate docker container app logs
+  shell: |
+    find /var/lib/docker/containers/ -name "*-json.log" -size +{{ truncate_logs_size_threshold }} | xargs truncate -s 0
+  register: truncate_result
+  failed_when: truncate_result.rc == 0 and "missing file operand" not in truncate_result.stdout and truncate_result.stdout != ""

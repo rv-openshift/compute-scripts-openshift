@@ -1,0 +1,8 @@
+---
+- name: Cleanup Failed and Completed Pods
+  hosts: bastion
+  gather_facts: false
+
+  roles:
+  - k8s_auth
+  - ocp4_pod-cleanup

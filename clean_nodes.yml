@@ -1,0 +1,10 @@
+# Cleans up app node logs in OCP cluster
+---
+- hosts: apps, infras, masters
+  gather_facts: no
+  vars:
+    - truncate_logs_size_threshold: 1G
+  roles:
+    - { role: oc_login, when: "inventory_hostname in groups['apps'][0]" }
+    - { role: clean_orphaned_indices, when: "inventory_hostname in groups['apps'][0]" }
+    - { role: clean_app_logs }

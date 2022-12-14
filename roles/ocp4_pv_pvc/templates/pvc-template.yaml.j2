@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ pvc_name }}"
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeName: "{{ pv_name }}"
+  storageClassName: ""
+  resources:
+    requests:
+      storage: "{{ pv_size }}"

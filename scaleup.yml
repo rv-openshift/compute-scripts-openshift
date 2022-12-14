@@ -1,0 +1,12 @@
+---
+- name: Scale up cpu/memory resources
+  #hosts: bastion
+  hosts: localhost --connection=local  
+  gather_facts: false
+
+  vars_files:
+  - roles/ocp4_scaleup/data/{{ ocp4_scaleup_file }}.yaml
+
+  roles:
+  #- k8s_auth
+  - ocp4_scaleup

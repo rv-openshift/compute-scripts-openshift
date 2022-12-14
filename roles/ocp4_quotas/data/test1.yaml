@@ -1,0 +1,4 @@
+---
+project_name: 'testme'
+limit_cpu: "400m"
+limit_memory: "1Gi"

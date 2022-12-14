@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: {{resourcequota}}
+  namespace: {{namespace}}
+spec:
+  hard:
+{% if pods %}
+    pods: '{{pods}}'
+{% endif %}
+{% if requestscpu %}
+    requests.cpu: '{{requestscpu}}'
+{% endif %}
+{% if requestsmemory %}
+    requests.memory: '{{requestsmemory}}'
+{% endif %}
+{% if limitscpu %}
+    limits.cpu: '{{limitscpu}}'
+{% endif %}
+{% if limitsmemory %}
+    limits.memory: '{{limitsmemory}}'
+{% endif %}

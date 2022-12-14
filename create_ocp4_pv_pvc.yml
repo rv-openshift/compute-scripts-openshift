@@ -1,0 +1,11 @@
+---
+- name: Create New PV and PVC for Applications
+  hosts: bastion
+  gather_facts: false
+
+  vars_files:
+  - roles/ocp4_pv_pvc/data/{{ pv_pvc_src_file }}.yaml
+
+  roles:
+  - k8s_auth
+  - ocp4_pv_pvc

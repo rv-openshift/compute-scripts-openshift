@@ -1,0 +1,7 @@
+---
+project_name: 'odm-prod'
+nfs_path: "/vol/OCP_TV_ODM_PROD/prod"
+nfs_svr: "teranas2.corp.domain.ca"
+pv_size: "1Gi"
+pv_name: "tv-brms-prod-nfs-pv"
+pvc_name: "tv-brms-prod-nfs-pvc"

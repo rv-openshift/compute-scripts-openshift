@@ -1,0 +1,28 @@
+- name: Login with API token
+  shell: "{{ oc_dir}}/oc login --token='{{ k8s_auth_results.k8s_auth.api_key }}' --insecure-skip-tls-verify=true {{ K8S_ADDR }}"
+
+- name: Template out Conjur  yaml resource file
+  template:
+    src: conjur-authenticator.yaml.j2
+    dest: /tmp/conjur-authenticator.yaml
+    mode: '0755'
+
+- name: Create Conjur SA, Role and RoleBinding
+  shell: "{{ oc_dir}}/oc apply -f /tmp/conjur-authenticator.yaml"
+
+- name: Copy Conjur ConfigMap file
+  copy:
+    src: ../files/{{ CLS_SITE }}-{{ CLS_ENV }}-dap-config.yaml
+    dest: "/tmp/"
+
+- name: Create Conjur ConfigMap
+  shell: "{{ oc_dir}}/oc apply -f /tmp/{{ CLS_SITE }}-{{ CLS_ENV }}-dap-config.yaml -n {{ PROJ_NAME }}"
+
+- name: Create Pull Secret for Image
+  shell: "{{oc_dir}}/oc create secret docker-registry cyberark-thirdparty-image-puller --docker-server=common-thirdparty-docker-release.artifactory.corp.domain.ca --docker-username=svc-ansible-artifact --docker-password=xxxxx --docker-email=x@x.com -n {{ PROJ_NAME }}"
+  when: CJUR_ENV=='uat'
+
+- name: Create Pull Secret for Image
+  shell: "{{oc_dir}}/oc create secret docker-registry cyberark-thirdparty-image-puller --docker-server=common-thirdparty-docker-release.artifactory.corp.domain.ca --docker-username=ads-central-deployer --docker-password=xxxxx --docker-email=x@x.com -n {{ PROJ_NAME }}"
+  when: CJUR_ENV=='prod'
+  

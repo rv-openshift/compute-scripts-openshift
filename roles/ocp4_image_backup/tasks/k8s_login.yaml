@@ -1,0 +1,3 @@
+- name: Login with API token
+  shell: "{{ oc_dir}}/oc login --token='{{ k8s_auth_results.k8s_auth.api_key }}' --insecure-skip-tls-verify=true {{ K8S_ADDR }}"
+

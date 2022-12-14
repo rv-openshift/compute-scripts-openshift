@@ -1,0 +1,8 @@
+---
+- name: Backup ECTD on OCP4 Cluster
+  hosts: bastion
+  gather_facts: false
+      
+  roles:
+  - k8s_auth
+  - ocp4_etcd_backup

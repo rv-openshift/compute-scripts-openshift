@@ -1,0 +1,8 @@
+---
+- name: Backup Image Registry Files
+  hosts: bastion
+  gather_facts: false
+
+  roles:
+  - k8s_auth
+  - ocp4_image_backup

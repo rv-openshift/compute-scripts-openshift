@@ -1,0 +1,11 @@
+---
+# Credentials are read from Ansible Tower credentials
+
+- name: Log in (obtain access token)
+  k8s_auth:
+    host: "{{ k8s_auth_address }}"
+    username: "{{ k8s_auth_username }}"
+    password: "{{ k8s_auth_password }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+  register: k8s_auth_results
+

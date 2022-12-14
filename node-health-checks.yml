@@ -1,0 +1,7 @@
+---
+- name: Deploy Node Health Checks
+  hosts: bastion
+  gather_facts: false
+  roles:
+  - k8s_auth
+  - ocp4_node_checks

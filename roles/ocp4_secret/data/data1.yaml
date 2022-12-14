@@ -1,0 +1,6 @@
+---
+namespace: 'ric-sandbox'
+user: svc-ansible-artifact
+password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+secretname: base-image-puller-thirdparty
+dockerserver: common-thirdparty-docker-release.artifactory.corp.domain.ca

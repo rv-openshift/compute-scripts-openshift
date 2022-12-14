@@ -1,0 +1,12 @@
+- name: Populate PV information into template
+  template:
+    src: pv-template.yaml.j2
+    dest: /tmp/create-pv.yml
+
+- name: Create PV for Namespace
+  command: oc create -f /tmp/create-pv.yml
+
+- name: Remove Temp file
+  file:
+    path: /tmp/create-pv.yml
+    state: absent

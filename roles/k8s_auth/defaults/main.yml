@@ -1,0 +1,10 @@
+---
+# Credentials are read from Ansible Tower credentials
+
+k8s_auth_address: "{{ lookup('env','K8S_ADDR') }}"
+k8s_auth_username: "{{ lookup('env','K8S_USERNAME') }}"
+k8s_auth_password: "{{ lookup('env','K8S_PASSWORD') }}"
+
+# Allow administration even if cert is expired or self-signed
+k8s_validate_certs: no
+

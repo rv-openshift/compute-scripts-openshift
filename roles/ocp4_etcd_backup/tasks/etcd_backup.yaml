@@ -1,0 +1,41 @@
+---
+- name: Gather Master NodeName
+  shell: "oc get nodes -o wide | grep master | head -n 1 | awk '{print $6}'"
+  register: ms
+
+- name: Print Master NodeName
+  debug:
+    msg: "Master NodeName: {{ ms.stdout }}"
+
+- name: Create backup directory on Bastion server
+  file:
+    path: /apps/tmp/etcd-backup/{{ ms.stdout }}
+    state: directory
+
+- name: Find etcd backup files that are older than 30 days
+  find:
+    path: /apps/tmp/etcd-backup/{{ ms.stdout }}/
+    age: "30d"
+  register: filesOlderThan30
+
+- name: Print files to be removed
+  debug:
+    msg: "Files: {{ filesOlderThan30.files }}"
+
+- name: Remove etcd backup files older than 30 days
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ filesOlderThan30.files }}"
+
+- name: Backup ETCD on Master Node
+  shell: ssh core@{{ ms.stdout }} "sudo /usr/local/bin/cluster-backup.sh /home/core/assets/backup"
+
+- name: Update ETCD backup file permission
+  shell: ssh core@{{ ms.stdout }} "sudo chmod 644 /home/core/assets/backup/*"
+
+- name: Transfer ETCD backup file to Bastion server
+  shell: scp core@{{ ms.stdout }}:/home/core/assets/backup/* /apps/tmp/etcd-backup/{{ ms.stdout }}
+
+- name: Remove ETCD backup file on Master Node
+  shell: ssh core@{{ ms.stdout }} "sudo rm -rf /home/core/assets/backup/*"

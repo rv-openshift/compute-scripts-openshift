@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: quotas-limits-template
+objects:
+  - kind: "LimitRange"
+    apiVersion: "v1"
+    metadata:
+      name: "{{ project_name }}-limits"
+    spec:
+      limits:
+        - type: "Pod"
+          max:
+            cpu: "{{ max_pod_cpu_limit }}"
+            memory: "{{ max_pod_memory_limit }}"
+          min:
+            cpu: "100m"
+            memory: "300Mi"
+        - type: "Container"
+          max:
+            cpu: "{{ max_container_cpu_limit }}"
+            memory: "{{ max_container_memory_limit }}"
+          min:
+            cpu: "100m"
+            memory: "300Mi"
+          default:
+            cpu: "100m"
+            memory: "300Mi"
+          defaultRequest:
+            cpu: "100m"
+            memory: "300Mi"
+  - kind: ResourceQuota
+    apiVersion: v1
+    metadata:
+      name: "{{ project_name }}-quota"
+    spec:
+      hard:
+        requests.cpu: "{{ cpu_request_quota }}"
+        requests.memory: "{{ memory_request_quota }}"
+        limits.cpu: "{{ cpu_limit_quota }}"
+        limits.memory: "{{ memory_limit_quota }}"

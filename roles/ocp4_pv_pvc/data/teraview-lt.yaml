@@ -1,0 +1,7 @@
+---
+project_name: teraview-lt
+nfs_path: "/OCP_TRV_DEVUAT/ngtv/lt"
+nfs_svr:  "msssanctrlpr7vd2.corp.domain.ca"
+pv_size:  20Gi
+pv_name:  "tv-ngtv-lt-nfs-pv"
+pvc_name: "tv-ngtv-lt-nfs-pvc"

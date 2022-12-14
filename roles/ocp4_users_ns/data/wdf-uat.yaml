@@ -1,0 +1,10 @@
+---
+project_name: 'wdf-uat'
+# Grant Admin Access
+ads_users: [gmanga01, ademar01, ipagu01, szheng01]
+# Grant View Access
+dev_users: []
+# Users to be Removed
+rem_users: []
+# Users Access level to be removed
+access_level: ''

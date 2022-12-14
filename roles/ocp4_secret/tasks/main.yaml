@@ -1,0 +1,13 @@
+- include: k8s_login.yaml
+
+- name: select create secret docker registry
+  include_tasks: create_secret_docker_registry.yaml
+  when: create_secret_docker_registry | default(False) == True
+
+- name: select create secret opaque
+  include_tasks: create_secret_opaque.yaml
+  when: create_secret_opaque | default(False) == True
+
+- name: select create secret link
+  include_tasks: create_secret_link.yaml
+  when: create_secret_link | default(False) == True

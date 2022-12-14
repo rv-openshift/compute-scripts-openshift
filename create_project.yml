@@ -1,0 +1,22 @@
+# Creates a new OCP project. If a project puid is specified, the project is run using that puid. This playbook assumes that the inventory being run 
+# on corresponds to a single node with oc cli access to the cluster.
+---
+- hosts: all
+  vars:
+    - project_name: project-name
+    - display_name: display-name
+    - dc_label: mss
+    - env_label: uat
+    - dev_team_label: cs
+    - snow_ci_assignment_group: assignment-group
+    - create_ci: true
+    - nfs_access: 'false'
+    # Specify optional 'project_puid' to run project under specific puid
+    - project_puid: "{{ '1000520000' if nfs_access == 'true' else 'None' }}"
+    - snow_ci_table: cmdb_ci_docker_container
+    - ci_name: "ocp-{{ dc_label | lower }}-{{ env_label | lower }}-{{ dev_team_label | lower }}-{{ project_name | lower}}"
+  gather_facts: yes
+  roles:
+    - { role: oc_login }
+    - role: create_project
+    - { role: create_snow_ci, when: create_ci is defined and create_ci|bool}

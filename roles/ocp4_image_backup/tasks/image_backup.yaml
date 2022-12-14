@@ -1,0 +1,16 @@
+---
+- name: Identify Image Registry Pod
+  shell: "oc -n openshift-image-registry get po | grep -i image-registry | grep -vi operator | awk '{print $1}'"
+  register: regpod
+
+- name: Print Image Registry Pod
+  debug:
+    msg: "Image Registry Pod: {{ regpod.stdout }}"
+
+- name: Create Image Registry backup directory on Bastion server
+  file:
+    path: /apps/tmp/image-backup/{{ regpod.stdout }}
+    state: directory
+
+- name: Transfer Image Registry files to Bastion server
+  command: oc -n openshift-image-registry rsync {{ regpod.stdout }}:/registry/ /apps/tmp/image-backup/{{ regpod.stdout }}/

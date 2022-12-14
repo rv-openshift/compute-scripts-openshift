@@ -1,0 +1,4 @@
+---
+project_name: 'odm-qa3'
+limit_cpu: "1024m"
+limit_memory: "10Gi"

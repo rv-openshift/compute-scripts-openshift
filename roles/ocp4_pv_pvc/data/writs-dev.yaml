@@ -1,0 +1,8 @@
+
+---
+project_name: 'writs-dev'
+nfs_path: "/vol/OCP_WDF_UAT/dev"
+nfs_svr: "msssanctrlpr7vd2.corp.domain.ca"
+pv_size: "1Gi"
+pv_name: "wdf-dev-mss-pv"
+pvc_name: "wdf-dev-mss-pvc"

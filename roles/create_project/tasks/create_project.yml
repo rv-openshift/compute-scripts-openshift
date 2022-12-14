@@ -1,0 +1,24 @@
+- debug:
+    msg: Project Name is {{ project_name }}
+
+- debug:
+    msg: Project Display Name is {{ display_name }}
+
+- name: Check if project {{ project_name }} exists
+  command: oc get project {{ project_name }} -o json
+  check_mode: false
+  changed_when: false
+  failed_when: false
+  register: get_project
+
+- name: Create Project
+  command: oc new-project "{{ project_name }}" --display-name "{{ display_name }}"
+
+- name: Give admin group admin access to project
+  command: oc adm policy add-role-to-group admin OCP_Cluster_Admin -n "{{ project_name }}"
+
+- debug:
+    msg: CI name is {{ ci_name }}
+
+- name:  Add project label
+  command: oc label namespace "{{ project_name }}" snow_ci="{{ ci_name }}"

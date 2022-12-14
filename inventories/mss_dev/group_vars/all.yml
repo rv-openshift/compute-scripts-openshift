@@ -1,0 +1,4 @@
+oc_dir: "/usr/local/bin"
+K8S_USERNAME: "{{ lookup('env','K8S_USERNAME') }}"
+K8S_PASSWORD: "{{ lookup('env','K8S_PASSWORD') }}"
+K8S_ADDR: "{{ lookup('env','K8S_ADDR') }}"

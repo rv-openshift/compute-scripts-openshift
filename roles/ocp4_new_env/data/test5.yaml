@@ -1,0 +1,25 @@
+---
+# Set Environment
+cls_env:  'uat'
+# Set Cluster Site only for Production -- mrk or mss. For DEV/UAT, leave empty
+cls_site: ''
+# Namespace creation without NFS Shares
+#project_name: 'testme'
+#project_puid: "None"
+#project_pgid: "10000"
+# Namesapce creation with NFS and requires Windows Access
+#project_name: 'testme'
+#project_puid: "1000520000"
+#project_pgid: "10000"
+# Namespace creation with NFS and requires Specific UID and GID
+project_name: 'testme'
+project_puid: "1001"
+project_pgid: "1000"
+# Create Quotas
+limit_cpu: "500m"
+limit_memory: "1Gi"
+# Grant Admin Access
+ads_users: [gmanga01, rvener01]
+# Grant View Access. Leave empty, if None
+dev_users: [dhe01]
+

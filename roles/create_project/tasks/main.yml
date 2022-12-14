@@ -1,0 +1,6 @@
+- include: create_project.yml
+- include: modify_project_puid.yml
+  # Run when a desired puid to use for running the project is specified.
+  when: project_puid is defined and project_puid != "None"
+  vars:
+    - tmp_project_file: /tmp/"{{ project_name }}".yml

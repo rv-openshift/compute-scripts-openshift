@@ -1,0 +1,29 @@
+- name: Check if Namespace {{ project_name }} exists
+  command: oc get project {{ project_name }} -o json
+  check_mode: false
+  changed_when: false
+  failed_when: false
+  register: get_project
+
+- name: Create Namespace
+  command: oc new-project "{{ project_name }}" --display-name "{{ project_name }}"
+
+- name: Add Admin Access users to Application Namespace
+  command: oc adm policy add-role-to-user admin {{ item }} -n {{ project_name }}
+  with_items: "{{ ads_users }}"
+
+- name: Add View Access users to Application Namespace
+  command: oc adm policy add-role-to-user view {{ item }} -n {{ project_name }}
+  with_items: "{{ dev_users }}"
+
+- name: Create Service Account for Application Deployment
+  command: oc -n {{ project_name }} create secret docker-registry ads-central-deployer --docker-server=central-docker-release.artifactory.corp.domain.ca --docker-username=ads-central-deployer --docker-password=xxxxxxxxxx --docker-email=x@x.com
+
+- name: Service Accounts for Jenkins  Pipelines
+  command: oc -n {{ project_name }} create sa {{ cls_site }}-{{ project_name }}-deployer
+ 
+- name: Service Account RoleBinding for Jenkins  Pipelines
+  command: oc -n {{ project_name }} create rolebinding {{ project_name }}-deployer-sa --clusterrole=edit --serviceaccount={{ project_name }}:{{ cls_site }}-{{ project_name }}-deployer
+
+- name: Create Namespace Quota
+  command: oc create resourcequota {{ project_name }}-quotas --hard=limits.cpu={{ limit_cpu }},limits.memory={{ limit_memory }} -n {{ project_name }}

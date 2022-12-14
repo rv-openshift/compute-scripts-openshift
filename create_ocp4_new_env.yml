@@ -1,0 +1,11 @@
+---
+- name: Create New Environment for Applications
+  hosts: bastion
+  gather_facts: false
+
+  vars_files:
+  - roles/ocp4_new_env/data/{{ new_env_src_file }}.yaml
+
+  roles:
+  - k8s_auth
+  - ocp4_new_env

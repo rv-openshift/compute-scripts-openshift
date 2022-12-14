@@ -1,0 +1,9 @@
+---
+- name: Login with API token
+  shell: "{{ oc_dir}}/oc login --token='{{ k8s_auth_results.k8s_auth.api_key }}' --insecure-skip-tls-verify=true {{ K8S_ADDR }}"
+
+- name: Cleanup Failed Pods
+  command: "{{ oc_dir}}/oc delete pod --field-selector=status.phase==Failed --all-namespaces"
+
+- name: Cleanup Completed Pods
+  command: "{{ oc_dir}}/oc delete pod --field-selector=status.phase==Succeeded --all-namespaces"

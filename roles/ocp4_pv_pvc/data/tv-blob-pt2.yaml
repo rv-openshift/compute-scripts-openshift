@@ -1,0 +1,7 @@
+---
+project_name: 'tv-blob-pt'
+nfs_path: "/TvDataPblobs_extra"
+nfs_svr: "teranastvbst1.corp.domain.ca"
+pv_size: "1Gi"
+pv_name: "tv-blobs-pt-mrk-extra-pv"
+pvc_name: "tv-blobs-pt-mrk-extra"

@@ -1,0 +1,14 @@
+# Restarts an OCP node, which should be designated as the inventory for this playbook.
+---
+- hosts: all
+  vars:
+    - drain_timeout: 300
+    - reboot_timeout: 600
+    - restart_node_hostname: ''
+    - master_node_hostname: ''
+  gather_facts: no
+  roles:
+    - { role: oc_login, when: inventory_hostname == master_node_hostname }
+    - { role: prepare_restart_node, when: inventory_hostname == master_node_hostname }
+    - { role: restart_node, when: inventory_hostname == restart_node_hostname }
+    - { role: enable_restart_node, when: inventory_hostname == master_node_hostname }

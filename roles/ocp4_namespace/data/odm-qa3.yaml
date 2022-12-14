@@ -1,0 +1,4 @@
+# Namespace creation without NFS Shares
+project_name: 'odm-qa3'
+project_puid: "1000520000"
+project_pgid: "10000"

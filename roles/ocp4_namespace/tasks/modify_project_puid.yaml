@@ -1,0 +1,4 @@
+- name: Update Namespace Supplement Group UID
+  shell: "oc patch ns {{ project_name }} -p  '{\"metadata\": {\"annotations\": {\"openshift.io/sa.scc.supplemental-groups\": \"{{ project_puid }}/{{ project_pgid }}\"}}}'"
+- name:  Update Namespace SCC UID Range
+  shell: "oc patch ns {{ project_name }} -p  '{\"metadata\": {\"annotations\": {\"openshift.io/sa.scc.uid-range\": \"{{ project_puid }}/{{ project_pgid }}\"}}}'"

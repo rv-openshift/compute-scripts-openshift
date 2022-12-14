@@ -1,0 +1,12 @@
+- name: Pass in quotas and limits template
+  template:
+    src: quotas_limits.yml
+    dest: "{{ tmp_quotas_file }}"
+
+- name: Apply the OpenShift template to create desired quotas and limits
+  shell: oc process -f "{{ tmp_quotas_file }}" | oc apply -n {{ project_name }} -f -
+
+- name: Remove Temp file
+  file:
+    path: "{{ tmp_quotas_file }}"
+    state: absent

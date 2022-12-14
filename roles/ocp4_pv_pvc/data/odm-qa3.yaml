@@ -1,0 +1,7 @@
+---
+project_name: 'odm-qa3'
+nfs_path: "/vol/tv_bookloading_dev/tv_bookloading_dev_qtree/BRMS/qa3"
+nfs_svr: "mrksanctrlpr7vd2.corp.domain.ca"
+pv_size: "5Gi"
+pv_name: "tv-brms-qa3-nfs-pv"
+pvc_name: "tv-brms-qa3-nfs-pvc"

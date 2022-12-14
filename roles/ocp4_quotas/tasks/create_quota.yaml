@@ -1,0 +1,13 @@
+- name: Check if quota exist on namespace
+  command: oc get resourcequota {{ project_name }}-quotas -n {{ project_name }}
+  check_mode: false
+  changed_when: false
+  failed_when: false
+  register: quota_status
+  
+- name: Delete quota, if exist
+  command: oc delete resourcequota {{ project_name }}-quotas -n {{ project_name }}
+  when: quota_status.rc == 0
+
+- name: Create Namespace Quota
+  command: oc create resourcequota {{ project_name }}-quotas --hard=limits.cpu={{ limit_cpu }},limits.memory={{ limit_memory }} -n {{ project_name }}

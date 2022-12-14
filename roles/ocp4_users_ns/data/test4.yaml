@@ -1,0 +1,10 @@
+---
+project_name: 'ric-sandbox'
+# Grant Admin Access
+ads_users: [gmanga01, ademar01]
+# Grant View Access
+dev_users: [dhe01, kmalik01]
+# Users to be Removed
+rem_users: [amonie01]
+# Users Access level to be removed
+access_level: 'admin'

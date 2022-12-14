@@ -1,0 +1,7 @@
+---
+project_name: 'tv-blob-qa3'
+nfs_path: "/vol/TvCstore_QA3_msstv-blob-qa3"
+nfs_svr: "msssanctrlpr7vd2.corp.domain.ca"
+pv_size: "10Gi"
+pv_name: "tv-cstore-qa3-mss-pv"
+pvc_name: "tv-cstore-qa3-mss"

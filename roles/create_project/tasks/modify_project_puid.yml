@@ -1,0 +1,16 @@
+- debug:
+    msg: PUID to use for this project is {{ project_puid }}
+
+- name: Extract playbook from Project
+  shell: oc get namespace "{{ project_name }}" -o yaml > "{{ tmp_project_file }}"
+
+- name: Substitute Project UID in Temp File
+  shell: perl -p -i -e s/`grep openshift.io/sa.scc.supplemental-groups "{{ tmp_project_file }}"  | awk '{print $2}' | cut -f1 -d '/'`/"{{project_puid}}"/g "{{ tmp_project_file }}"
+
+- name: Apply Project Temp File
+  shell: oc replace -f "{{ tmp_project_file }}"
+
+- name: Remove Temp file
+  file:
+    path: "{{ tmp_project_file }}"
+    state: absent

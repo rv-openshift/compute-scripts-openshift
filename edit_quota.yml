@@ -1,0 +1,11 @@
+---
+- name: Edit Resource Quota
+  hosts: bastion
+  gather_facts: false
+
+  vars_files:
+  - roles/ocp4_edit/data/{{ edit_src_file }}.yaml
+
+  roles:
+    - k8s_auth
+    - { name: ocp4_edit, edit_quota: true }

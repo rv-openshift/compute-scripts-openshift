@@ -1,0 +1,10 @@
+---
+project_name: 'odm-qa3'
+# Grant Admin Access
+ads_users: [amalik01,egao01,kmalik01]
+# Grant View Access
+dev_users: []
+# Users to be Removed
+rem_users: []
+# Users Access level to be removed
+access_level: ''

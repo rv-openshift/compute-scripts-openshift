@@ -1,0 +1,7 @@
+- hosts: apps
+  run_once: false
+  gather_facts: false
+  become: yes
+  tasks:
+  - name: Cleanup Exited Pods on App Nodes
+    shell: docker rm $(docker ps --all -q -f status=exited)

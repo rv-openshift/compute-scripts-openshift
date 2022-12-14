@@ -1,0 +1,7 @@
+---
+project_name: 'rts-uat-qa'
+nfs_path: "/TvCstore_L/cstore"
+nfs_svr: "mrksanctrlpr9vd1.corp.domain.ca"
+pv_size: "10Gi"
+pv_name:  "rts-uat-qa-nfs-cstore-lt-mrk-pv"
+pvc_name: "rts-uat-qa-nfs-cstore-lt-mrk-pvc"

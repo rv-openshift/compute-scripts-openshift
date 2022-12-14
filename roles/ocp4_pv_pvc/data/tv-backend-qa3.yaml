@@ -1,0 +1,8 @@
+
+---
+project_name: 'tv-backend-qa3'
+nfs_path: "/tv-bookloading-dev/qa3"
+nfs_svr: "mrksanctrlpr7vd2.corp.domain.ca"
+pv_size: "5Gi"
+pv_name: "tv-bkld-qa3-nfs-pv"
+pvc_name: "tv-bkld-qa3-nfs-pvc"

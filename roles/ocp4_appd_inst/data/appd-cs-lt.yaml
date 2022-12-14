@@ -1,0 +1,11 @@
+---
+# Application to Instrument 
+ns_str: "domain-connect|cds-lt|pinservices|central-reporting-service"
+# Namespace where the application will be instrumented in
+appd_ns: "cs-lt"
+# Ony required, if there is a application already instrumented in the Namespace
+ext_str: "what"
+# Appd Output working directory
+conf_path: /apps/tmp
+# Appd extracted Config file where changes will be made to
+conf_file: "{{ conf_path }}/appd-cls.yaml"

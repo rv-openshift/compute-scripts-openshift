@@ -1,0 +1,12 @@
+- name: Populate PVC information into template
+  template:
+    src: pvc-template.yaml.j2
+    dest: /tmp/create-pvc.yml
+
+- name: Create PVC for Namespace
+  command: oc create -f /tmp/create-pvc.yml -n {{ project_name }}
+
+- name: Remove Temp file
+  file:
+    path: /tmp/create-pvc.yml
+    state: absent

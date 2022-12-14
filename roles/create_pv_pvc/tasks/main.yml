@@ -1,0 +1,12 @@
+- name: Populate pv and pvc information into template
+  template:
+    src: pv-pvc-template.yml
+    dest: "{{ tmp_pv_pvc_file }}"
+
+- name: Process and apply the OpenShift template to create desired pv and pvc
+  shell: oc process -f "{{ tmp_pv_pvc_file }}" | oc apply -n {{ project_name }} -f -
+
+- name: Remove Temp file
+  file:
+    path: "{{ tmp_pv_pvc_file }}"
+    state: absent

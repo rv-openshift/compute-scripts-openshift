@@ -1,0 +1,19 @@
+- name: Stop atomic-openshift-node service
+  ignore_errors: yes
+  systemd:
+    name: atomic-openshift-node
+    state: stopped
+
+- name: Reboot this machine
+  reboot:
+    reboot_timeout: "{{ reboot_timeout }}"
+
+- name: Make sure atomic-openshift-node service is started
+  systemd:
+    name: atomic-openshift-node
+    state: started
+
+- name: Make sure ntpd service is started
+  systemd:
+    name: ntpd
+    state: started

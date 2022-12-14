@@ -1,0 +1,11 @@
+- hosts: masters
+  run_once: true
+  vars:
+    - project_name: project-name
+    - pv_size: '10'
+    - nfs_path: /vol/abc/qtress/test
+    - nfs_svr: netapp_nfs_svr
+    - tmp_pv_pvc_file: "/tmp/{{ project_name }}_nfs_pv_pvc.yml"
+  roles:
+    - { role: oc_login }
+    - role: create_pv_pvc  

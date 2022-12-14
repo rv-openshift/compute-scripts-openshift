@@ -1,0 +1,4 @@
+---
+project_name: 'emap-dev'
+limit_cpu: "500m"
+limit_memory: "4Gi"

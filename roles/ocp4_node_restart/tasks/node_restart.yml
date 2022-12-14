@@ -1,0 +1,44 @@
+- name: Make node unschedulable
+  command: oc adm cordon {{ restart_node }}
+  register: node_cdn
+
+- name: Drain Node 1st Attempt
+  command: oc adm drain {{ restart_node }}  --force --ignore-daemonsets --delete-local-data --timeout={{ drain_timeout }}s
+  register: drain_result
+  ignore_errors: true
+  when:  node_cdn.rc == 0
+
+- name: Delete any remaining pods
+  command: oc get po --all-namespaces --field-selector 'spec.nodeName={{ restart_node }},status.phase=Terminating' -o json | oc delete -f -
+  when: drain_result.rc != 0
+
+- name: Attempt 2, Evict pods from the node
+  command: oc adm drain {{ restart_node }}  --force --ignore-daemonsets --delete-local-data --timeout={{ drain_timeout }}s
+  when: drain_result.rc != 0
+
+- name: Get node IP
+  shell: oc get nodes -o wide| grep {{ restart_node }} | awk '{print $6}'
+  register: node_ip
+
+- name: Restart Node
+  shell: ssh core@{{ node_ip.stdout }} "sudo shutdown -r now"
+  ignore_unreachable: true
+  ignore_errors: true
+  register: node_status
+  when: node_ip.rc == 0
+
+- name: Wait for Node Restart
+  pause:
+    minutes: 5
+  when: node_status.rc != 0
+
+- name: Verify Node Connectivity
+  local_action:
+    module: wait_for
+      host={{ node_ip.stdout }}
+      port=22
+      delay=1
+      timeout=60
+
+- name:  Make node schedulable
+  command: oc adm uncordon {{ restart_node }}
